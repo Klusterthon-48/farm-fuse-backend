@@ -18,7 +18,7 @@ const farmerSignUp = async (req, res) => {
     const newFarmer = new farmerModel({ email, password });
 
 //     await newFarmer.save();
-console.log(newFarmer);
+// console.log(newFarmer);
 
     res.status(201).json({ message: "Account created successfully", newFarmer: newFarmer});
   } catch (error) {
