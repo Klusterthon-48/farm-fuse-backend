@@ -20,7 +20,7 @@ const cors = require("cors");
 app.use(express.json());
 
 const corsOptions = {
-  origin: "http://localhost:4000",
+  origin: ["http://localhost:3000", "https://farm-fuse-frontend.vercel.app/"],
 };
 
 app.use(cors(corsOptions));
