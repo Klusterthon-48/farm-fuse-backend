@@ -8,7 +8,7 @@ import { errorResponse, successResponse } from "./utils/libs/response.libs.js";
 const app = express();
 
 //import routes
-// import routes from "./routes/index.js";
+import routes from "./routes/index.js";
 
 // middlewares
 app.use(morgan("dev"));
@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // routes
-// app.use("/api", routes);
+app.use("/api", routes);
 
 // index route
 app.get("/", (_req, res) => {
