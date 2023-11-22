@@ -1,15 +1,12 @@
-import express from "express";
+import { Router } from "express";
 
-const {
-  farmerSignIn,
-  farmerSignUp,
-  cropsAPI,
-} = require("../controllers/farmer_account.controller");
+// sample import from controllers
+import { createNewFarmer } from "../controllers/farmer_account.controller.js";
 
-const router = express.Router();
+// Sample router
+const userRouter = Router();
 
-router.post("/signin", farmerSignIn);
-router.post("/signup", farmerSignUp);
-router.get("/crops", cropsAPI);
+// sample route
+userRouter.post("/signup", createNewFarmer);
 
-module.exports = router;
+export default userRouter;

@@ -1,62 +1,18 @@
-// controller
+import { StatusCodes } from "http-status-codes";
+import farmerSchema from "../models/farmer_account.model.js";
+import { errorResponse, successResponse } from "../utils/libs/response.libs.js";
+import tryCatchLibs from "../utils/libs/tryCatch.libs.js";
 
-// const farmerModel = require("../models/farmer_account.model");
-import farmerModel from '../models/farmer_account.model'
+// Sample Function to create a new farmer
+export const createNewFarmer = tryCatchLibs(async (req, res) => {
+  const { name, username, password } = req.body;
 
-const farmerSignIn = (req, res) => {
-  console.log(req.body);
-};
-const farmerSignUp = async (req, res) => {
-  const { email, password } = req.body;
+  const farmer = await farmerSchema.findOne({ username });
+  if (!farmer) return errorResponse(res, "Username does not exist", StatusCodes.NOT_FOUND);
 
-  try {
-    const existingUser = await farmerModel.findOne({ email });
+  if (farmer) return errorResponse(res, "Username exists", StatusCodes.CONFLICT);
 
-    if (existingUser) {
-      return res.status(400).json({ error: "Email already exists" });
-    }
+  const newFarmer = await farmerSchema.create({ name, username, password });
 
-    const newFarmer = new farmerModel({ email, password });
-
-//     await newFarmer.save();
-// console.log(newFarmer);
-
-    res.status(201).json({ message: "Account created successfully", newFarmer: newFarmer});
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-};
-
-const cropsAPI = (req, res) => {
-  const crops = [
-    {
-      id: 1,
-      name: "Tomato",
-      type: "Vegetable",
-      humidity: "High",
-      plantingTime: "Spring",
-      harvestingTime: "Summer",
-    },
-    {
-      id: 2,
-      name: "Wheat",
-      type: "Grain",
-      humidity: "Moderate",
-      plantingTime: "Fall",
-      harvestingTime: "Spring",
-    },
-    {
-      id: 3,
-      name: "Apple",
-      type: "Fruit",
-      humidity: "Moderate",
-      plantingTime: "Spring",
-      harvestingTime: "Fall",
-    },
-  ];
-
-  res.send(crops);
-};
-
-module.exports = { farmerSignIn, farmerSignUp, cropsAPI };
+  return successResponse(res, "Farmer created", newFarmer, StatusCodes.CREATED);
+});
