@@ -1,6 +1,5 @@
-// routes
+import express from "express";
 
-const express = require("express");
 const {
   farmerSignIn,
   farmerSignUp,

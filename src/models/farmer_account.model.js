@@ -1,4 +1,7 @@
-const mongoose = require("mongoose");
+// model
+// const mongoose = require("mongoose");
+
+import mongoose from 'mongoose'
 
 const farmerSchema = new mongoose.Schema({
   name: { type: String, required: true },
