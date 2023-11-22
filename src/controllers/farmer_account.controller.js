@@ -16,12 +16,14 @@ export const createNewFarmer = tryCatchLibs(async (req, res) => {
     return errorResponse(res, "Username already exists", StatusCodes.CONFLICT);
   }
 
-  // If the username doesn't exist, create a new farmer
-  const newFarmer = await farmerModel.create({ name, username, password });
+  // Hash the password
+  const hashedPassword = await hashPassword(password);
+
+  // Create a new farmer with the hashed password
+  const newFarmer = await farmerModel.create({ name, username, password: hashedPassword });
 
   return successResponse(res, "Farmer created", newFarmer, StatusCodes.CREATED);
 });
-
 
 
 
