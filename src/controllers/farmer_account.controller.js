@@ -11,13 +11,13 @@ export const createNewFarmer = tryCatchLibs(async (req, res) => {
   const { name, username, password } = req.body;
 
   // Check if the username already exists
-  const existingFarmer = await farmerSchema.findOne({ username });
+  const existingFarmer = await farmerModel.findOne({ username });
   if (existingFarmer) {
     return errorResponse(res, "Username already exists", StatusCodes.CONFLICT);
   }
 
   // If the username doesn't exist, create a new farmer
-  const newFarmer = await farmerSchema.create({ name, username, password });
+  const newFarmer = await farmerModel.create({ name, username, password });
 
   return successResponse(res, "Farmer created", newFarmer, StatusCodes.CREATED);
 });
