@@ -28,3 +28,29 @@ npm start
 ## Postman Collection
 
 https://documenter.getpostman.com/view/22984536/2s9YeBfa1e
+
+## API Reference
+
+### Register
+
+```http
+  POST /api/register
+```
+
+| Parameter  | Type     | Description                      |
+| :--------- | :------- | :------------------------------- |
+| `name`     | `string` | **Required**. Name of Farmer     |
+| `email`    | `string` | **Required**. Email of Farmer    |
+| `password` | `string` | **Required**. Password of Farmer |
+| `username` | `string` | **Required**. Username of Farmer |
+
+### Login
+
+```http
+  POST /api/login
+```
+
+| Parameter  | Type     | Description                      |
+| :--------- | :------- | :------------------------------- |
+| `username` | `string` | **Required**. Email of Farmer    |
+| `password` | `string` | **Required**. Password of Farmer |
