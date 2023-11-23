@@ -1,12 +1,10 @@
 import { StatusCodes } from "http-status-codes";
-import farmerSchema from "../models/farmer_account.model.js";
 import { errorResponse, successResponse } from "../utils/libs/response.libs.js";
 import tryCatchLibs from "../utils/libs/tryCatch.libs.js";
 import farmerModel from "../models/farmer_account.model.js";
-import {hashPassword, comparePasswords} from "../utils/libs/bcryptUtils.js"
+import { hashPassword, comparePasswords } from "../utils/libs/bcryptUtils.js";
 import { generateResetToken, signToken, verifyToken } from "../utils/libs/jwtUtils.js";
 import { sendPasswordResetEmail } from "../utils/libs/emailUtils.js";
-
 
 // Sample Function to create a new farmer
 export const createNewFarmer = tryCatchLibs(async (req, res) => {
@@ -22,12 +20,10 @@ export const createNewFarmer = tryCatchLibs(async (req, res) => {
   const hashedPassword = await hashPassword(password);
 
   // Create a new farmer with the hashed password
-  const newFarmer = await farmerModel.create({ name, username, email, password: hashedPassword });
+  await farmerModel.create({ name, username, email, password: hashedPassword });
 
-  return successResponse(res, "Farmer created", newFarmer, StatusCodes.CREATED);
+  return successResponse(res, "Farmer created", StatusCodes.CREATED);
 });
-
-
 
 export const authenticateFarmer = tryCatchLibs(async (req, res) => {
   const { username, password } = req.body;
@@ -51,7 +47,6 @@ export const authenticateFarmer = tryCatchLibs(async (req, res) => {
   // Send success response with the token and farmer details
   return successResponse(res, "Authentication successful", { farmer, token }, StatusCodes.OK);
 });
-
 
 export const accessDashboard = tryCatchLibs(async (req, res) => {
   const token = req.headers.authorization;
@@ -79,15 +74,13 @@ export const accessDashboard = tryCatchLibs(async (req, res) => {
   return successResponse(res, "Access granted", dataFromDatabase, StatusCodes.OK);
 });
 
-
-
 export const forgotPassword = tryCatchLibs(async (req, res) => {
   const { email } = req.body;
 
   const farmer = await farmerModel.findOne({ email });
 
   if (!farmer) {
-    return errorResponse(res, 'No account found with that email address', StatusCodes.NOT_FOUND);
+    return errorResponse(res, "No account found with that email address", StatusCodes.NOT_FOUND);
   }
 
   // Generate a unique token for password reset (you need to implement this function)
@@ -103,15 +96,12 @@ export const forgotPassword = tryCatchLibs(async (req, res) => {
   try {
     await sendPasswordResetEmail(farmer.email, farmer.name, resetToken);
   } catch (error) {
-    console.error('Error sending password reset email:', error);
-    return errorResponse(res, 'Error sending password reset email', StatusCodes.INTERNAL_SERVER_ERROR);
+    console.error("Error sending password reset email:", error);
+    return errorResponse(res, "Error sending password reset email", StatusCodes.INTERNAL_SERVER_ERROR);
   }
 
-  return successResponse(res, 'Password reset email sent successfully', null, StatusCodes.OK);
+  return successResponse(res, "Password reset email sent successfully", null, StatusCodes.OK);
 });
-
-
-
 
 // ... (your existing imports)
 
@@ -119,10 +109,13 @@ export const resetPassword = tryCatchLibs(async (req, res) => {
   const { resetToken, newPassword } = req.body;
 
   // Find the farmer by the reset token
-  const farmer = await farmerModel.findOne({ resetPasswordToken: resetToken, resetPasswordExpires: { $gt: Date.now() } });
+  const farmer = await farmerModel.findOne({
+    resetPasswordToken: resetToken,
+    resetPasswordExpires: { $gt: Date.now() },
+  });
 
   if (!farmer) {
-    return errorResponse(res, 'Invalid or expired reset token', StatusCodes.BAD_REQUEST);
+    return errorResponse(res, "Invalid or expired reset token", StatusCodes.BAD_REQUEST);
   }
 
   // Hash the new password
@@ -135,7 +128,7 @@ export const resetPassword = tryCatchLibs(async (req, res) => {
 
   await farmer.save();
 
-  return successResponse(res, 'Password reset successful', null, StatusCodes.OK);
+  return successResponse(res, "Password reset successful", null, StatusCodes.OK);
 });
 
 // ... (your existing functions)
