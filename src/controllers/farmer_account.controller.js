@@ -44,6 +44,8 @@ export const authenticateFarmer = tryCatchLibs(async (req, res) => {
   // If the username and password are valid, create and sign a JWT token
   const token = signToken({ username: farmer.username });
 
+  delete farmer.password;
+
   // Send success response with the token and farmer details
   return successResponse(res, "Authentication successful", { farmer, token }, StatusCodes.OK);
 });
@@ -88,7 +90,9 @@ export const forgotPassword = tryCatchLibs(async (req, res) => {
 
   // Save the reset token and its expiration time to the farmer document
   farmer.resetPasswordToken = resetToken;
-  farmer.resetPasswordExpires = Date.now() + 3600000;
+
+  // Token expires in 10 minutes
+  farmer.resetPasswordExpires = Date.now() + 600000;
 
   await farmer.save();
 
@@ -106,29 +110,46 @@ export const forgotPassword = tryCatchLibs(async (req, res) => {
 // ... (your existing imports)
 
 export const resetPassword = tryCatchLibs(async (req, res) => {
-  const { resetToken, newPassword } = req.body;
+  const { resetPasswordToken, email, newPassword } = req.body;
 
-  // Find the farmer by the reset token
-  const farmer = await farmerModel.findOne({
-    resetPasswordToken: resetToken,
-    resetPasswordExpires: { $gt: Date.now() },
-  });
+  if (!resetPasswordToken || !email || !newPassword) {
+    return errorResponse(res, "Provide missing values", StatusCodes.BAD_REQUEST);
+  }
 
+  const farmer = await farmerModel.findOne({ email });
   if (!farmer) {
-    return errorResponse(res, "Invalid or expired reset token", StatusCodes.BAD_REQUEST);
+    return errorResponse(res, "No account found with that email address", StatusCodes.NOT_FOUND);
+  }
+
+  // Check if the reset token is valid
+  if (resetPasswordToken !== farmer.resetPasswordToken) {
+    return errorResponse(res, "Invalid reset token", StatusCodes.UNAUTHORIZED);
+  }
+
+  // Check if the reset token has expired
+  if (Date.now() > farmer.resetPasswordExpires) {
+    return errorResponse(res, "Reset token has expired. Generate a new one", StatusCodes.UNAUTHORIZED);
+  }
+
+  // check if password is the same as the old password
+  const passwordMatch = await comparePasswords(newPassword, farmer.password);
+  if (passwordMatch) {
+    return errorResponse(res, "New password cannot be the same as the old password", StatusCodes.BAD_REQUEST);
   }
 
   // Hash the new password
   const hashedPassword = await hashPassword(newPassword);
 
-  // Update the farmer's password and reset token fields
+  // Update the farmer's password
   farmer.password = hashedPassword;
-  farmer.resetPasswordToken = undefined;
-  farmer.resetPasswordExpires = undefined;
+
+  // Clear the reset token and its expiration time
+  farmer.resetPasswordToken = "";
+  farmer.resetPasswordExpires = null;
 
   await farmer.save();
 
-  return successResponse(res, "Password reset successful", null, StatusCodes.OK);
+  return successResponse(res, "Password reset successful. Login with your new Password", null, StatusCodes.OK);
 });
 
 // ... (your existing functions)
