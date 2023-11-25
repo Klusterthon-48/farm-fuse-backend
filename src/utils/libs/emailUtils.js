@@ -9,6 +9,28 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+
+
+export const sendWelcomeEmail = async (email, name) => {
+  const mailOptions = {
+    from: process.env.USER,
+    to: email,
+    subject: "Welcome to Farm Fuse",
+    html: `
+            <p>Hello, ${name}!</p>
+            <p>Welcome to Farm Fuse! We're thrilled that you've chosen to register with us.</p>
+            <p>If you have any questions or need assistance, feel free to reach out.</p>
+            <p>Thank you for joining us on the journey of cultivating success and transforming agriculture.</p>
+            <p>Best regards,</p>
+            <p>The Farm Fuse Team</p>
+          `,
+  };
+
+  return transporter.sendMail(mailOptions);
+};
+
+
+
 export const sendPasswordResetEmail = async (email, name, resetToken) => {
   const resetLink = `${process.env.CLIENT_URL}/api/reset_password?email=${email}&token=${resetToken}`;
 

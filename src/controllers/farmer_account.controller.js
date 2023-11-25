@@ -4,9 +4,10 @@ import tryCatchLibs from "../utils/libs/tryCatch.libs.js";
 import farmerModel from "../models/farmer_account.model.js";
 import { hashPassword, comparePasswords } from "../utils/libs/bcryptUtils.js";
 import { generateResetToken, signToken, verifyToken } from "../utils/libs/jwtUtils.js";
-import { sendPasswordResetEmail } from "../utils/libs/emailUtils.js";
+import { sendPasswordResetEmail, sendWelcomeEmail } from "../utils/libs/emailUtils.js";
 
-// Sample Function to create a new farmer
+
+// Function to create a new farmer
 export const createNewFarmer = tryCatchLibs(async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -21,7 +22,15 @@ export const createNewFarmer = tryCatchLibs(async (req, res) => {
   // Create a new farmer with the hashed password
   await farmerModel.create({ name, email, password: hashedPassword });
 
-  return successResponse(res, "Farmer created", StatusCodes.CREATED);
+ // Send a welcome email to the newly registered farmer
+ try {
+  await sendWelcomeEmail(email, name);
+  console.log('Welcome email sent successfully.');
+} catch (error) {
+  console.error('Error sending welcome email:', error);
+}
+
+return successResponse(res, "Farmer created", StatusCodes.CREATED);
 });
 
 
