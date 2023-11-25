@@ -70,12 +70,8 @@ export const accessDashboard = tryCatchLibs(async (req, res) => {
     return errorResponse(res, "Invalid token", StatusCodes.UNAUTHORIZED);
   }
 
-  // The token is valid, you can access the dashboard or perform other actions here
-  // For example, you might fetch additional data from the database based on the decodedToken
-
   // Simulate fetching data from the database based on the decodedToken
   const dataFromDatabase = {
-    // Some data relevant to the dashboard
     farmerEmail: decodedToken.email,
   };
 
@@ -118,7 +114,8 @@ export const forgotPassword = tryCatchLibs(async (req, res) => {
   return successResponse(res, "Password reset email sent successfully", null, StatusCodes.OK);
 });
 
-// ... (your existing imports)
+
+
 
 export const resetPassword = tryCatchLibs(async (req, res) => {
   const { resetPasswordToken, email, newPassword } = req.body;
@@ -163,4 +160,3 @@ export const resetPassword = tryCatchLibs(async (req, res) => {
   return successResponse(res, "Password reset successful. Login with your new Password", null, StatusCodes.OK);
 });
 
-// ... (your existing functions)
