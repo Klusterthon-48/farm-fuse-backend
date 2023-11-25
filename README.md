@@ -2,7 +2,7 @@
 
 Precision Farming is a solution that predicts the best time to plant and harvest crops using machine learning model, taking into account local weather conditions and soil quality. This solution will help farmers improve their yields.
 
-> - Visit the [Live url](https://farm-fuse-backend.vercel.app/)
+> Visit the [Live url](https://farm-fuse-backend.vercel.app/)
 
 ## Key Features
 
@@ -93,7 +93,7 @@ npm start
 ### Data
 
 > - Available Crops (label) :
-> - `['rice', 'maize', 'chickpea', 'kidneybeans', 'pigeonpeas', 'mothbeans', 'mungbean', 'blackgram', 'lentil', 'watermelon', 'muskmelon', 'cotton', 'jute']`
+>   `['rice', 'maize', 'chickpea', 'kidneybeans', 'pigeonpeas', 'mothbeans', 'mungbean', 'blackgram', 'lentil', 'watermelon', 'muskmelon', 'cotton', 'jute']`
 
 > - Available Countries (country) :
-> - `['Nigeria', 'South Africa', 'Kenya']`
+>   `['Nigeria', 'South Africa', 'Kenya']`
