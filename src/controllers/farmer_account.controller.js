@@ -29,7 +29,7 @@ export const createNewFarmer = tryCatchLibs(async (req, res) => {
   //   console.error('Error sending welcome email:', error);
   // }
 
-  return successResponse(res, "Farmer created", StatusCodes.CREATED);
+  return successResponse(res, "Farmer created", {}, StatusCodes.CREATED);
 });
 
 export const authenticateFarmer = tryCatchLibs(async (req, res) => {
