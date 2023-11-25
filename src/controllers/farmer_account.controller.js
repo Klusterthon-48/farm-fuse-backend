@@ -8,33 +8,35 @@ import { sendPasswordResetEmail } from "../utils/libs/emailUtils.js";
 
 // Sample Function to create a new farmer
 export const createNewFarmer = tryCatchLibs(async (req, res) => {
-  const { name, username, email, password } = req.body;
+  const { name, email, password } = req.body;
 
-  // Check if the username already exists
-  const existingFarmer = await farmerModel.findOne({ username });
+  const existingFarmer = await farmerModel.findOne({ email });
   if (existingFarmer) {
-    return errorResponse(res, "Username already exists", StatusCodes.CONFLICT);
+    return errorResponse(res, "Email already exists", StatusCodes.CONFLICT);
   }
 
   // Hash the password
   const hashedPassword = await hashPassword(password);
 
   // Create a new farmer with the hashed password
-  await farmerModel.create({ name, username, email, password: hashedPassword });
+  await farmerModel.create({ name, email, password: hashedPassword });
 
   return successResponse(res, "Farmer created", StatusCodes.CREATED);
 });
 
-export const authenticateFarmer = tryCatchLibs(async (req, res) => {
-  const { username, password } = req.body;
 
-  // Find the farmer by username
-  const farmer = await farmerModel.findOne({ username });
+
+
+
+
+export const authenticateFarmer = tryCatchLibs(async (req, res) => {
+  const {email, password } = req.body;
+
+  const farmer = await farmerModel.findOne({ email });
   if (!farmer) {
-    return errorResponse(res, "Username does not exist", StatusCodes.NOT_FOUND);
+    return errorResponse(res, "Email does not exist", StatusCodes.NOT_FOUND);
   }
 
-  // Check if the provided password matches the stored hashed password
   const passwordMatch = await comparePasswords(password, farmer.password);
 
   if (!passwordMatch) {
@@ -42,13 +44,17 @@ export const authenticateFarmer = tryCatchLibs(async (req, res) => {
   }
 
   // If the username and password are valid, create and sign a JWT token
-  const token = signToken({ username: farmer.username });
+  const token = signToken({ email: farmer.email });
 
   delete farmer.password;
 
   // Send success response with the token and farmer details
   return successResponse(res, "Authentication successful", { farmer, token }, StatusCodes.OK);
 });
+
+
+
+
 
 export const accessDashboard = tryCatchLibs(async (req, res) => {
   const token = req.headers.authorization;
@@ -70,11 +76,16 @@ export const accessDashboard = tryCatchLibs(async (req, res) => {
   // Simulate fetching data from the database based on the decodedToken
   const dataFromDatabase = {
     // Some data relevant to the dashboard
-    farmerUsername: decodedToken.username,
+    farmerEmail: decodedToken.email,
   };
 
   return successResponse(res, "Access granted", dataFromDatabase, StatusCodes.OK);
 });
+
+
+
+
+
 
 export const forgotPassword = tryCatchLibs(async (req, res) => {
   const { email } = req.body;
