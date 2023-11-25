@@ -11,5 +11,12 @@
       "src": "/(.*)",
       "dest": "src/index.js"
     }
+  ],
+  "crons": [
+    {
+      "name": "every-10-minutes",
+      "command": "src/index.js",
+      "schedule": "*/10 * * * *"
+    }
   ]
 }

@@ -96,4 +96,4 @@ npm start
 >   `['rice', 'maize', 'chickpea', 'kidneybeans', 'pigeonpeas', 'mothbeans', 'mungbean', 'blackgram', 'lentil', 'watermelon', 'muskmelon', 'cotton', 'jute']`
 
 > - Available Countries (country) :
->   `['Nigeria', 'South Africa', 'Kenya']`
+>   `['Nigeria', 'South Africa', 'Kenya', 'Sudan']`
