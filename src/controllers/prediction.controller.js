@@ -46,13 +46,18 @@ export const getPrediction = tryCatchLib(async (req, res) => {
     const prediction = response.data;
     const planting_season = `Predicted planting season for ${label} in ${country} is ${season} season`;
 
-    // const environmentalData = {
-    //   temperature,
-    //   ph,
-    //   humidity,
-    //   water_availability,
-    // };
+    const environmentalData = {
+      temperature,
+      ph,
+      humidity,
+      water_availability,
+    };
 
-    return successResponse(res, "Prediction successful", { planting_season, prediction }, StatusCodes.OK);
+    return successResponse(
+      res,
+      "Prediction successful",
+      { environmentalData, planting_season, prediction },
+      StatusCodes.OK
+    );
   }
 });
