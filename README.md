@@ -91,4 +91,6 @@ npm start
 
 ### Data
 
-- [Crop Data](
+> - Available Crops (label) : `['rice', 'maize', 'chickpea', 'kidneybeans', 'pigeonpeas', 'mothbeans', 'mungbean', 'blackgram', 'lentil', 'watermelon', 'muskmelon', 'cotton', 'jute']`
+
+> - Available Countries (country) : `['Nigeria', 'South Africa', 'Kenya']`
