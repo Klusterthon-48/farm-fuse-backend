@@ -1,6 +1,7 @@
 # Precision Farming Backend
 
-Precision Farming is a solution that predicts the best time to plant and harvest crops using machine learning model, taking into account local weather conditions and soil quality. This solution will help farmers improve their yields. [Live url](https://farm-fuse-backend.vercel.app/)
+Precision Farming is a solution that predicts the best time to plant and harvest crops using machine learning model, taking into account local weather conditions and soil quality. This solution will help farmers improve their yields.
+Visit the [Live url](https://farm-fuse-backend.vercel.app/)
 
 ## Key Features
 
