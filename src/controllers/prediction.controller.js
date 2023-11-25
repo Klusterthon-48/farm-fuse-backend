@@ -33,8 +33,8 @@ export const getPrediction = tryCatchLib(async (req, res) => {
 
     const input_data = {
       features: {
-        categorical_features: [season, label, country],
-        numeric_features: [temperature, ph, humidity, water_availability],
+        categorical_features: [label, country],
+        numeric_features: [ph, temperature, humidity, water_availability],
       },
     };
 
@@ -44,7 +44,20 @@ export const getPrediction = tryCatchLib(async (req, res) => {
     if (response.status !== 200) return errorResponse(res, "Prediction failed", StatusCodes.INTERNAL_SERVER_ERROR);
 
     const prediction = response.data;
+    const planting_season = `Predicted planting season for ${label} in ${country} is ${season} season`;
 
-    return successResponse(res, "Prediction successful", { prediction }, StatusCodes.OK);
+    const environmentalData = {
+      temperature,
+      ph,
+      humidity,
+      water_availability,
+    };
+
+    return successResponse(
+      res,
+      "Prediction successful",
+      { environmentalData, planting_season, prediction },
+      StatusCodes.OK
+    );
   }
 });
