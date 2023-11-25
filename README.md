@@ -1,6 +1,6 @@
 # Precision Farming Backend
 
-Precision Farming is a solution that predicts the best time to plant and harvest crops using machine learning model, taking into account local weather conditions and soil quality. This solution will help farmers improve their yields. Live url: https://farm-fuse-backend.vercel.app/
+Precision Farming is a solution that predicts the best time to plant and harvest crops using machine learning model, taking into account local weather conditions and soil quality. This solution will help farmers improve their yields. [Live url](https://farm-fuse-backend.vercel.app/)
 
 ## Key Features
 
@@ -27,7 +27,7 @@ npm start
 
 ## Postman Collection
 
-https://documenter.getpostman.com/view/22984536/2s9YeBfa1e
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://documenter.getpostman.com/view/22984536/2s9YeBfa1e)
 
 ## API Reference
 
@@ -54,3 +54,40 @@ https://documenter.getpostman.com/view/22984536/2s9YeBfa1e
 | :--------- | :------- | :------------------------------- |
 | `username` | `string` | **Required**. Email of Farmer    |
 | `password` | `string` | **Required**. Password of Farmer |
+
+### Forgot Password
+
+```http
+  POST /api/forgot-password
+```
+
+| Parameter | Type     | Description                              |
+| :-------- | :------- | :--------------------------------------- |
+| `email`   | `string` | **Required**. Registered Email of Farmer |
+
+### Reset Password
+
+```http
+  POST /api/reset-password
+```
+
+| Parameter     | Type     | Description                                 |
+| :------------ | :------- | :------------------------------------------ |
+| `newPassword` | `string` | **Required**. New Password of Farmer        |
+| `email`       | `string` | **Required**. Registered Email of Farmer    |
+| `token`       | `string` | **Required**. Token sent to email of Farmer |
+
+### Prediction API
+
+```http
+  POST /api/predict
+```
+
+| Parameter | Type     | Description                                   |
+| :-------- | :------- | :-------------------------------------------- |
+| `label`   | `string` | **Required**. Crop Name (Categories)          |
+| `country` | `string` | **Required**. Location of Farmer (Categories) |
+
+### Data
+
+- [Crop Data](
