@@ -10,20 +10,24 @@ const transporter = nodemailer.createTransport({
 });
 
 
-
 export const sendWelcomeEmail = async (email, name) => {
+  const farmFuseLogo = "https://res.cloudinary.com/dn4gfzlhq/image/upload/v1700938194/farm_d14gwq.png";
+
   const mailOptions = {
     from: process.env.USER,
     to: email,
     subject: "Welcome to Farm Fuse",
     html: `
-            <p>Hello, ${name}!</p>
-            <p>Welcome to Farm Fuse! We're thrilled that you've chosen to register with us.</p>
-            <p>If you have any questions or need assistance, feel free to reach out.</p>
-            <p>Thank you for joining us on the journey of cultivating success and transforming agriculture.</p>
-            <p>Best regards,</p>
-            <p>The Farm Fuse Team</p>
-          `,
+      <div style="background-color: #307C31; padding: 20px; text-align: center; color: #ffffff;">
+        <img src="${farmFuseLogo}" alt="Farm Fuse Logo" style="max-width: 150px; height: 40px; margin-bottom: 20px;">
+        <p style="font-size: 18px;">Hello, ${name}!</p>
+        <p style="font-size: 16px;">Welcome to Farm Fuse! We're thrilled that you've chosen to register with us.</p>
+        <p style="font-size: 16px;">If you have any questions or need assistance, feel free to reach out.</p>
+        <p style="font-size: 16px;">Thank you for joining us on the journey of cultivating success and transforming agriculture.</p>
+        <p style="font-size: 16px;">Best regards,</p>
+        <p style="font-size: 16px;">The Farm Fuse Team</p>
+      </div>
+    `,
   };
 
   return transporter.sendMail(mailOptions);
