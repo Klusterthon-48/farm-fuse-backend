@@ -59,7 +59,7 @@ npm start
 ### Forgot Password
 
 ```http
-  POST /api/forgot-password
+  POST /api/forgot_password
 ```
 
 | Parameter | Type     | Description                              |
@@ -69,7 +69,7 @@ npm start
 ### Reset Password
 
 ```http
-  POST /api/reset-password
+  POST /api/reset_password
 ```
 
 | Parameter     | Type     | Description                                 |
