@@ -90,6 +90,69 @@ npm start
 | `label`   | `string` | **Required**. Crop Name (Categories)          |
 | `country` | `string` | **Required**. Location of Farmer (Categories) |
 
+### Sample Request
+
+```json
+{
+  "label": "rice",
+  "country": "Nigeria"
+}
+```
+
+### Sample Response
+
+```json
+{
+  "success": true,
+  "message": "Prediction successful",
+  "payload": {
+    "environmentalData": {
+      "temperature": "18.52510753",
+      "ph": "5.773454729",
+      "humidity": "69.0276233",
+      "water_availability": "88.10234397"
+    },
+    "planting_season": "Predicted planting season for maize in South Africa is winter season",
+    "prediction": {
+      "Predicted harvest season": "spring"
+    }
+  }
+}
+```
+
+### Weather API
+
+```http
+  GET /api/weather
+```
+
+| Parameter | Type     | Description           |
+| :-------- | :------- | :-------------------- |
+| `country` | `string` | **Required**. Country |
+
+### Sample Request
+
+```json
+{
+  "country": "Nigeria"
+}
+```
+
+### Sample Response
+
+```json
+{
+  "success": true,
+  "message": "Weather data fetch successful",
+  "payload": {
+    "country": "Nigeria",
+    "temperature": 29,
+    "weather": "Clouds",
+    "description": "overcast clouds"
+  }
+}
+```
+
 ### Data
 
 > - Available Crops (label) :
