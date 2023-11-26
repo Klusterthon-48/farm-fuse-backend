@@ -13,22 +13,27 @@ export const createNewFarmer = tryCatchLibs(async (req, res) => {
 
   const existingFarmer = await farmerModel.findOne({ email });
   if (existingFarmer) {
+    console.error('Email already exists');
     return errorResponse(res, "Email already exists", StatusCodes.CONFLICT);
   }
 
   // Hash the password
   const hashedPassword = await hashPassword(password);
+  console.log('Hashed Password:', hashedPassword);
 
   // Create a new farmer with the hashed password
   await farmerModel.create({ name, email, password: hashedPassword });
+  console.log('Farmer created successfully');
 
- // Send a welcome email to the newly registered farmer
- try {
-  await sendWelcomeEmail(email, name);
-  console.log('Welcome email sent successfully.');
-} catch (error) {
-  console.error('Error sending welcome email:', error);
-}
+
+  // Send a welcome email to the newly registered farmer
+   try {
+    await sendWelcomeEmail(email, name);
+    console.log('Welcome email sent successfully.');
+  } catch (error) {
+    console.error('Error sending welcome email:', error);
+  }
+
 
 return successResponse(res, "Farmer created", StatusCodes.CREATED);
 });
