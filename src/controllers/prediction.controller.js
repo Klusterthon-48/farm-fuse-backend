@@ -61,3 +61,43 @@ export const getPrediction = tryCatchLib(async (req, res) => {
     );
   }
 });
+
+/**
+ * @description Fetch weather data for a particular country using the OpenWeatherMap API
+ * @param {object} req
+ * @param {object} res
+ * @returns {object} JSON response
+ */
+
+export const getWeatherData = tryCatchLib(async (req, res) => {
+  // const country = ["Nigeria", "Sudan", "Kenya", "South Africa"];
+  const { country } = req.body;
+
+  // randomly select a country from the array
+  // const randomCountry = country[Math.floor(Math.random() * country.length)];
+
+  // convert the input to lowercase and trim any whitespace
+  country.trim().toLowerCase();
+
+  // Make a request to the OpenWeatherMap API
+  const response = await axios.get(
+    `https://api.openweathermap.org/data/2.5/weather?q=${country}&appid=${process.env.OPEN_WEATHER_MAP_API_KEY}`
+  );
+
+  if (response.status !== 200)
+    return errorResponse(res, "Weather data fetch failed", StatusCodes.INTERNAL_SERVER_ERROR);
+
+  const data = response.data;
+
+  //convert temperature to celsius
+  data.main.temp = Math.round(data.main.temp - 273.15);
+
+  const weatherData = {
+    country: data.name,
+    temperature: data.main.temp,
+    weather: data.weather[0].main,
+    description: data.weather[0].description,
+  };
+
+  return successResponse(res, "Weather data fetch successful", weatherData, StatusCodes.OK);
+});

@@ -46,7 +46,7 @@ export const authenticateFarmer = tryCatchLibs(async (req, res) => {
   const passwordMatch = await comparePasswords(password, farmer.password);
 
   if (!passwordMatch) {
-    return errorResponse(res, "Invalid password", StatusCodes.UNAUTHORIZED);
+    return errorResponse(res, "Invalid email or password", StatusCodes.UNAUTHORIZED);
   }
 
   // If the username and password are valid, create and sign a JWT token
