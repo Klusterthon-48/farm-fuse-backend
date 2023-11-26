@@ -1,31 +1,47 @@
 // utils/jwtUtils.js
 import jwt from "jsonwebtoken";
+import crypto from "crypto";
 
-const secretKey = process.env.JWT_SECRET; 
-const expiresIn = "1d";
-const resetTokenExpiresIn = "5m"
+const secretKey = process.env.JWT_SECRET;
+// const expiresIn = "1d";
+// const resetTokenExpiresIn = "5m";
 
-export const signToken = (payload) => {
-  return jwt.sign(payload, secretKey, { expiresIn });
+/**
+ * @description Function to generate a JWT token
+ * @param {Object} payload Payload to be signed
+ * @param {String} expiresIn Expiry time for the token
+ * @returns {String} Returns JWT token
+ */
+
+export const generateToken = (payload, expiresIn = expiresIn) => {
+  try {
+    const token = jwt.sign(payload, secretKey, { expiresIn });
+    return token;
+  } catch (error) {
+    console.error("Error generating token:", error);
+  }
 };
+
+/**
+ * @description Function to verify a JWT token
+ * @param {String} token JWT token to be verified
+ * @returns {Object} Returns the decoded token
+ */
 
 export const verifyToken = (token) => {
   try {
-    return jwt.verify(token, secretKey);
+    const decodedToken = jwt.verify(token, secretKey);
+    return decodedToken;
   } catch (error) {
     return null; // Token verification failed
   }
 };
 
-export const generateResetToken = () => {
-  console.log('Generating reset token...');
-  try {
-    const resetToken = jwt.sign({ type: 'reset' }, secretKey, { expiresIn: resetTokenExpiresIn });
-    console.log('Reset token generated:', resetToken);
-    return resetToken;
-  } catch (error) {
-    console.error('Error generating reset token:', error);
-    throw error;
-  }
-};
+/**
+ * @description Function to generate a reset token
+ * @returns {String} Returns reset token
+ */
 
+export function generateResetToken() {
+  return crypto.randomBytes(40).toString("hex");
+}

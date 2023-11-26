@@ -9,14 +9,21 @@ import {
   resetPassword,
 } from "../controllers/farmer_account.controller.js";
 
+import {
+  validateFarmerRegistration,
+  validateFarmerLogin,
+  validateForgotPassword,
+  validateResetPassword,
+} from "../middleware/validations/farmer.validations.js";
+
 // Sample router
 const userRouter = Router();
 
 // sample route
-userRouter.post("/register", createNewFarmer);
-userRouter.post("/login", authenticateFarmer);
+userRouter.post("/register", validateFarmerRegistration, createNewFarmer);
+userRouter.post("/login", validateFarmerLogin, authenticateFarmer);
 userRouter.get("/dashboard", accessDashboard);
-userRouter.post("/forgot_password", forgotPassword);
-userRouter.post("/reset_password", resetPassword);
+userRouter.post("/forgot_password", validateForgotPassword, forgotPassword);
+userRouter.post("/reset_password", validateResetPassword, resetPassword);
 
 export default userRouter;

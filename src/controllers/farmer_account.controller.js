@@ -3,7 +3,7 @@ import { errorResponse, successResponse } from "../utils/libs/response.libs.js";
 import tryCatchLibs from "../utils/libs/tryCatch.libs.js";
 import farmerModel from "../models/farmer_account.model.js";
 import { hashPassword, comparePasswords } from "../utils/libs/bcryptUtils.js";
-import { generateResetToken, signToken, verifyToken } from "../utils/libs/jwtUtils.js";
+import { generateToken, generateResetToken } from "../utils/libs/jwtUtils.js";
 import { sendPasswordResetEmail, sendWelcomeEmail } from "../utils/libs/emailUtils.js";
 
 // Function to create a new farmer
@@ -12,27 +12,25 @@ export const createNewFarmer = tryCatchLibs(async (req, res) => {
 
   const existingFarmer = await farmerModel.findOne({ email });
   if (existingFarmer) {
-    console.error('Email already exists');
+    console.error("Email already exists");
     return errorResponse(res, "Email already exists", StatusCodes.CONFLICT);
   }
 
   // Hash the password
   const hashedPassword = await hashPassword(password);
-  console.log('Hashed Password:', hashedPassword);
+  console.log("Hashed Password:", hashedPassword);
 
   // Create a new farmer with the hashed password
   await farmerModel.create({ name, email, password: hashedPassword });
-  console.log('Farmer created successfully');
-
+  console.log("Farmer created successfully");
 
   // Send a welcome email to the newly registered farmer
-   try {
+  try {
     await sendWelcomeEmail(email, name);
-    console.log('Welcome email sent successfully.');
+    console.log("Welcome email sent successfully.");
   } catch (error) {
-    console.error('Error sending welcome email:', error);
+    console.error("Error sending welcome email:", error);
   }
- 
 
   return successResponse(res, "Farmer created", {}, StatusCodes.CREATED);
 });
@@ -52,9 +50,10 @@ export const authenticateFarmer = tryCatchLibs(async (req, res) => {
   }
 
   // If the username and password are valid, create and sign a JWT token
-  const token = signToken({ email: farmer.email });
+  const token = generateToken({ email: farmer.email }, process.env.JWT_DURATION);
 
-  delete farmer.password;
+  // Remove the password from the farmer object
+  farmer.password = undefined;
 
   // Send success response with the token and farmer details
   return successResponse(res, "Authentication successful", { farmer, token }, StatusCodes.OK);
