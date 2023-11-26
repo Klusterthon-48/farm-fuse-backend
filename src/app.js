@@ -10,16 +10,16 @@ const app = express();
 //import routes
 import routes from "./routes/index.js";
 
-const corsOptions = {
-  origin: "https://farm-fuse-frontend.vercel.app",
-  optionsSuccessStatus: 200,
-};
+// const corsOptions = {
+//   origin: "https://farm-fuse-frontend.vercel.app/",
+//   optionsSuccessStatus: 200,
+// };
 
 // middlewares
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 
 // routes
 app.use("/api", routes);

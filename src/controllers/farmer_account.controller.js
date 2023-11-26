@@ -6,7 +6,6 @@ import { hashPassword, comparePasswords } from "../utils/libs/bcryptUtils.js";
 import { generateResetToken, signToken, verifyToken } from "../utils/libs/jwtUtils.js";
 import { sendPasswordResetEmail, sendWelcomeEmail } from "../utils/libs/emailUtils.js";
 
-
 // Function to create a new farmer
 export const createNewFarmer = tryCatchLibs(async (req, res) => {
   const { name, email, password } = req.body;
@@ -33,18 +32,13 @@ export const createNewFarmer = tryCatchLibs(async (req, res) => {
   } catch (error) {
     console.error('Error sending welcome email:', error);
   }
+ 
 
-
-return successResponse(res, "Farmer created", StatusCodes.CREATED);
+  return successResponse(res, "Farmer created", {}, StatusCodes.CREATED);
 });
 
-
-
-
-
-
 export const authenticateFarmer = tryCatchLibs(async (req, res) => {
-  const {email, password } = req.body;
+  const { email, password } = req.body;
 
   const farmer = await farmerModel.findOne({ email });
   if (!farmer) {
@@ -65,10 +59,6 @@ export const authenticateFarmer = tryCatchLibs(async (req, res) => {
   // Send success response with the token and farmer details
   return successResponse(res, "Authentication successful", { farmer, token }, StatusCodes.OK);
 });
-
-
-
-
 
 export const accessDashboard = tryCatchLibs(async (req, res) => {
   const token = req.headers.authorization;
@@ -91,11 +81,6 @@ export const accessDashboard = tryCatchLibs(async (req, res) => {
 
   return successResponse(res, "Access granted", dataFromDatabase, StatusCodes.OK);
 });
-
-
-
-
-
 
 export const forgotPassword = tryCatchLibs(async (req, res) => {
   const { email } = req.body;
@@ -127,9 +112,6 @@ export const forgotPassword = tryCatchLibs(async (req, res) => {
 
   return successResponse(res, "Password reset email sent successfully", null, StatusCodes.OK);
 });
-
-
-
 
 export const resetPassword = tryCatchLibs(async (req, res) => {
   const { resetPasswordToken, email, newPassword } = req.body;
@@ -173,4 +155,3 @@ export const resetPassword = tryCatchLibs(async (req, res) => {
 
   return successResponse(res, "Password reset successful. Login with your new Password", null, StatusCodes.OK);
 });
-
