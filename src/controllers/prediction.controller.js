@@ -56,7 +56,7 @@ export const getPrediction = tryCatchLib(async (req, res) => {
     return successResponse(
       res,
       "Prediction successful",
-      { environmentalData, info: { country, label }, planting_season, prediction },
+      { environmentalData, info: { country, crop: label }, planting_season, prediction },
       StatusCodes.OK
     );
   }
