@@ -99,5 +99,10 @@ export const getWeatherData = tryCatchLib(async (req, res) => {
     description: data.weather[0].description,
   };
 
+  // Set cors headers
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
   return successResponse(res, "Weather data fetch successful", weatherData, StatusCodes.OK);
 });
