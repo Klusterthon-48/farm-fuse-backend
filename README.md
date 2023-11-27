@@ -155,7 +155,7 @@ npm start
 
 ### Data
 
-> - Available Crops (label) :
+#### Available Crops (label) :
 
 - rice
 - maize
@@ -171,7 +171,7 @@ npm start
 - cotton
 - jute
 
-> - Available Countries (country) :
+#### Available Countries (country) :
 
 - Nigeria
 - South Africa
