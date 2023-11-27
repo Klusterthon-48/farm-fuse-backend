@@ -44,7 +44,7 @@ export const getPrediction = tryCatchLib(async (req, res) => {
     if (response.status !== 200) return errorResponse(res, "Prediction failed", StatusCodes.INTERNAL_SERVER_ERROR);
 
     const prediction = response.data;
-    const planting_season = `Predicted planting season: ${season} season`;
+    const planting_season = `${season}`;
 
     const environmentalData = {
       temperature,
