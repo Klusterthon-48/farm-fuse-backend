@@ -39,7 +39,8 @@ export const sendWelcomeEmail = async (email, name) => {
 
 
 export const sendPasswordResetEmail = async (email, name, resetToken) => {
-  const resetLink = `https://farm-fuse-frontend.vercel.app/api/reset_password?email=${email}&token=${resetToken}`;
+  const resetLink = `https://farm-fuse-frontend.vercel.app/reset-password/api/reset_password?email=${email}&token=${resetToken}`;
+
 
   const mailOptions = {
     from: process.env.USER,
